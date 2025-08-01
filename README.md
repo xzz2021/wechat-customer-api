@@ -1,13 +1,21 @@
 #### 微信智能对话 接入第三方api客服
 
+> 项目简介: 本服务使用nestjs框架构建, 需要node环境
 
-##### 流程
+##### 业务流程
+
+1. [官网](https://chatbot.weixin.qq.com/)绑定待接入的应用(也就是客户发送消息的平台)
+2. 开放API菜单里设置回调地址, 开启三方客服(启用后会接管客服状态,平台客服面板将无法使用)
+
+##### 接入流程
+
 1. [官网](https://chatbot.weixin.qq.com/)申请获取密匙三件套 `appid` `token` `encodingAESKey`, 将`test.env`改名为`.env`, 替换三件套
 2. 回调接口接收消息后需要立即响应,否则微信会重复调用3遍接口(所以不能等待异步执行)
 3. 先解密接收到的数据,再加密需要发送的消息(中间还需要xml和json互转), 官方文档没有js代码示例, 加解密函数在utils文件
 4. 回调地址必须是https的域名, 启动本服务后使用nginx转发6000端口(默认)即可
 
 **nginx配置示例**
+
 ```conf
 server {
  listen 443 ssl http2;
@@ -25,11 +33,14 @@ server {
  }
 }
 ```
+
 ##### 运行项目
+
 ```bash
 npm i
 npm dev
 ```
+
 或者使用pnpm
 
 ```bash
